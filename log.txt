@@ -1,0 +1,119 @@
+info: socket.io started
+Listening....
+ip : undefined, port : undefined
+===============================================
+debug: served static content /socket.io.js
+uri : /favicon.ico
+filename : /root/node_modules/lattetime/favicon.ico
+===============================================
+debug: served static content /socket.io.js
+===============================================
+debug: served static content /socket.io.js
+uri : /favicon.ico
+filename : /root/node_modules/lattetime/favicon.ico
+uri : /favicon.ico
+filename : /root/node_modules/lattetime/favicon.ico
+===============================================
+debug: served static content /socket.io.js
+uri : /favicon.ico
+filename : /root/node_modules/lattetime/favicon.ico
+debug: client authorized
+info: handshake authorized uAD4jI2VlFHPh_IX9Kpi
+debug: setting request GET /socket.io/1/websocket/uAD4jI2VlFHPh_IX9Kpi
+debug: set heartbeat interval for client uAD4jI2VlFHPh_IX9Kpi
+debug: client authorized for 
+debug: websocket writing 1::
+User connected
+===============================================
+debug: served static content /socket.io.js
+uri : /favicon.ico
+filename : /root/node_modules/lattetime/favicon.ico
+debug: emitting heartbeat for client uAD4jI2VlFHPh_IX9Kpi
+debug: websocket writing 2::
+debug: set heartbeat timeout for client uAD4jI2VlFHPh_IX9Kpi
+debug: got heartbeat packet
+debug: cleared heartbeat timeout for client uAD4jI2VlFHPh_IX9Kpi
+debug: set heartbeat interval for client uAD4jI2VlFHPh_IX9Kpi
+debug: client authorized
+info: handshake authorized XYnhs2C1CmQe_Bw-9Kpj
+debug: setting request GET /socket.io/1/websocket/XYnhs2C1CmQe_Bw-9Kpj
+debug: set heartbeat interval for client XYnhs2C1CmQe_Bw-9Kpj
+debug: client authorized for 
+debug: websocket writing 1::
+User connected
+debug: emitting heartbeat for client uAD4jI2VlFHPh_IX9Kpi
+debug: websocket writing 2::
+debug: set heartbeat timeout for client uAD4jI2VlFHPh_IX9Kpi
+debug: got heartbeat packet
+debug: cleared heartbeat timeout for client uAD4jI2VlFHPh_IX9Kpi
+debug: set heartbeat interval for client uAD4jI2VlFHPh_IX9Kpi
+debug: emitting heartbeat for client XYnhs2C1CmQe_Bw-9Kpj
+debug: websocket writing 2::
+debug: set heartbeat timeout for client XYnhs2C1CmQe_Bw-9Kpj
+debug: got heartbeat packet
+debug: cleared heartbeat timeout for client XYnhs2C1CmQe_Bw-9Kpj
+debug: set heartbeat interval for client XYnhs2C1CmQe_Bw-9Kpj
+data received
+Messeage num 300 ~ 399 : Web page
+web page controller call function
+fuction clientRequestLogin 
+ rrrr : lucy
+debug: websocket writing 5:::{"name":"data","args":[{"MessageNum":302,"id":"lucybe","success":1,"is_success":1}]}
+data received
+Messeage num 300 ~ 399 : Web page
+web page controller call function
+fuction clientRequestLogin 
+ rrrr : lucy
+debug: websocket writing 5:::{"name":"data","args":[{"MessageNum":302,"id":"lucybe","success":1,"is_success":1}]}
+debug: emitting heartbeat for client uAD4jI2VlFHPh_IX9Kpi
+debug: websocket writing 2::
+debug: set heartbeat timeout for client uAD4jI2VlFHPh_IX9Kpi
+debug: got heartbeat packet
+debug: cleared heartbeat timeout for client uAD4jI2VlFHPh_IX9Kpi
+debug: set heartbeat interval for client uAD4jI2VlFHPh_IX9Kpi
+debug: emitting heartbeat for client XYnhs2C1CmQe_Bw-9Kpj
+debug: websocket writing 2::
+debug: set heartbeat timeout for client XYnhs2C1CmQe_Bw-9Kpj
+debug: got heartbeat packet
+debug: cleared heartbeat timeout for client XYnhs2C1CmQe_Bw-9Kpj
+debug: set heartbeat interval for client XYnhs2C1CmQe_Bw-9Kpj
+debug: emitting heartbeat for client uAD4jI2VlFHPh_IX9Kpi
+debug: websocket writing 2::
+debug: set heartbeat timeout for client uAD4jI2VlFHPh_IX9Kpi
+debug: got heartbeat packet
+debug: cleared heartbeat timeout for client uAD4jI2VlFHPh_IX9Kpi
+debug: set heartbeat interval for client uAD4jI2VlFHPh_IX9Kpi
+debug: emitting heartbeat for client XYnhs2C1CmQe_Bw-9Kpj
+debug: websocket writing 2::
+debug: set heartbeat timeout for client XYnhs2C1CmQe_Bw-9Kpj
+debug: got heartbeat packet
+debug: cleared heartbeat timeout for client XYnhs2C1CmQe_Bw-9Kpj
+debug: set heartbeat interval for client XYnhs2C1CmQe_Bw-9Kpj
+info: transport end (socket end)
+debug: set close timeout for client uAD4jI2VlFHPh_IX9Kpi
+debug: cleared close timeout for client uAD4jI2VlFHPh_IX9Kpi
+debug: cleared heartbeat interval for client uAD4jI2VlFHPh_IX9Kpi
+debug: discarding transport
+===============================================
+debug: emitting heartbeat for client XYnhs2C1CmQe_Bw-9Kpj
+debug: websocket writing 2::
+debug: set heartbeat timeout for client XYnhs2C1CmQe_Bw-9Kpj
+debug: served static content /socket.io.js
+debug: got heartbeat packet
+debug: cleared heartbeat timeout for client XYnhs2C1CmQe_Bw-9Kpj
+debug: set heartbeat interval for client XYnhs2C1CmQe_Bw-9Kpj
+===============================================
+info: transport end (socket end)
+debug: set close timeout for client XYnhs2C1CmQe_Bw-9Kpj
+debug: cleared close timeout for client XYnhs2C1CmQe_Bw-9Kpj
+debug: cleared heartbeat interval for client XYnhs2C1CmQe_Bw-9Kpj
+debug: discarding transport
+debug: served static content /socket.io.js
+uri : /favicon.ico
+filename : /root/node_modules/lattetime/favicon.ico
+uri : /favicon.ico
+filename : /root/node_modules/lattetime/favicon.ico
+===============================================
+debug: served static content /socket.io.js
+uri : /favicon.ico
+filename : /root/node_modules/lattetime/favicon.ico
