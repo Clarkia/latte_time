@@ -18,11 +18,9 @@ var webpage_controller = require("./webpageController");
 var teacher_controller = require("./teacherController");
 var student_controller = require("./studentController");
 
-server.listen(9999);
-//server.listen(process.env.PORT);
+//server.listen(9999);
+server.listen(process.env.PORT);
 
-
-    
 var mysqlConfig = {
     host : "lattetime.cafe24.com",
     port : "3306",
@@ -95,7 +93,7 @@ app.use(function(request, response, next){
 //**************
 //리스닝
 //**************
-var ID_CONN_PAIR = [];
+//var ID_CONN_PAIR = [];
 
 console.log("Listening....");
 console.log("ip : " + process.env.IP + ", port : " + process.env.PORT);
@@ -125,15 +123,15 @@ socket.on('data', function( data) {
 		switch(parseInt(received.MessageNum / 100, 10)){
 			case 1:
 				console.log("Messeage num 100 ~ 199 : Teacher Mobile");
-                teacher_controller.call(socket, received, ID_CONN_PAIR, conn);
+                teacher_controller.call(socket, received, conn);
 				break;
 			case 2:
 				console.log("Messeage num 200 ~ 299 : Student Mobile");
-			student_controller.call(socket, received, ID_CONN_PAIR, conn);
+			student_controller.call(socket, received, conn);
 				break;
 			case 3:
                 console.log("Messeage num 300 ~ 399 : Web page");
-                webpage_controller.call(socket, received, ID_CONN_PAIR, conn);
+                webpage_controller.call(socket, received, conn);
 				break;
 			default: //에러 
 				;

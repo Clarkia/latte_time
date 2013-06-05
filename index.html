@@ -10,7 +10,7 @@
         <script src="http://code.jquery.com/ui/1.8.21/jquery-ui.min.js"></script>
         <script src="https://raw.github.com/furf/jquery-ui-touch-punch/master/jquery.ui.touch-punch.min.js"></script>                 
         <link rel="stylesheet" href="https://s3.amazonaws.com/codiqa-cdn/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
-      <script src="https://s3.amazonaws.com/codiqa-cdn/mobile/1.2.0/jquery.mobile-1.2.0.min.js">
+        <script src="https://s3.amazonaws.com/codiqa-cdn/mobile/1.2.0/jquery.mobile-1.2.0.min.js">
 
         </script>
         <!-- about jquery touch punch that allow us to use jquery ui with mobile enviroment -->
@@ -31,35 +31,79 @@
 				var MessageNum; //Integer
 				var id; // String
                 var password; //String
+                var subjectNum;
+                var lectureNum;
 			}
-			
-            
-            
-                
-                
+		
 			//***********
 			// 함수
 			//***********
 			//연결 함수
 			function connectbtn() {
-    console.log("Connection...");
-					document.getElementById('socket').style.visibility='hidden';
+                console.log("Connection...");
+				document.getElementById('socket').style.visibility='hidden';
 
-			socket = io.connect('http://lattetime.cafe24.com:9999');
-        //  socket = io.connect('http://latteio.grapeprince.c9.io');
+		    //	socket = io.connect('http://lattetime.cafe24.com:9999');
+                socket = io.connect('http://latte_time.snowyjune.c9.io');
 
- socket.on('data', function (res) {
-        console.log("res received messageNum :  "+res.MessageNum);
-        console.log("res id : "+res.id);
-        console.log("res success : "+res.success);
-        
-        if( parseInt(res.MessageNum, 10) == 302) {
-            console.log("res is_success : "+res.is_success);
-        }
-        
-        });
-              
+                socket.on('data', function (res) {
+                    console.log("result : messageNum - "+res.MessageNum);
+                    console.log("result : id - "+res.id);
+                    console.log("result : success - "+res.success);
                 
+                    //결과 받은 거 출력
+                    switch (parseInt(res.MessageNum, 10)) {
+                        case 302:
+                            console.log("result : is_success - "+res.is_success);
+                            break;
+                        case 304:
+                            console.log("result : is_success - "+res.is_success);
+                            break;
+                        case 306:
+                            console.log("result : subjectList ");
+                            var list = res.subjectList;
+                            for(var i = 0 ; i <list.length ; i++){
+                                console.log((i+1) +"th item =====================================");
+                                console.log("=> subjetNum : " + list[i].subjectNum +" ");
+                                console.log("=> subjetName : " + list[i].subjectName +" ");
+                                console.log("=> subjetClass : " + list[i].subjectClass +" \n");
+                            }
+                            break;
+                        case 308:
+                            console.log("result : lectureList ");
+                            var list = res.lectureList;
+                             for(var i = 0 ; i <list.length ; i++){
+                                console.log((i+1) +"th item =====================================");
+                                console.log("=> lecNum : " + list[i].lecNum +" ");
+                                console.log("=> lecName : " + list[i].lecName +"\n");
+                            }
+                            break;
+                        case 310:
+                            console.log("result : activityList ");
+                             var list = res.activityList;
+                             for(var i = 0 ; i <list.length ; i++){
+                                console.log( (i+1) +"th item =====================================");
+                                console.log("=> actNum : " + list[i].actNum +" ");
+                                console.log("=> actName : " + list[i].actName +" ");
+                                console.log("=> actType : " + list[i].actType +" ");
+                                console.log("=> actImg : " + list[i].actImg +"\n");
+                            }
+                            break;
+                        case 312:
+                            break;
+                        case 314:
+                            break;
+                        case 316:
+                            break;
+                        case 318:
+                            break;
+                        case 320:
+                            break;
+                        case 322:
+                            break;
+                    }
+            
+                });     
 			}
 			
 			//연결 종료 함수
@@ -75,15 +119,52 @@
 				//dto에 입력 받은 데이터 넣기
 				dto.MessageNum = document.getElementById("send_message_type").value;
 				dto.id = document.getElementById("send_id").value;
-                dto.password =  document.getElementById("send_pw").value;
 				
+                console.log("messagenum : "+ dto.MessageNum);
+                
+                //MesseageNum에 따라 dto 구성하기
+                switch (parseInt(document.getElementById("send_message_type").value,10)) {
+                    case 301:
+                        dto.password =  document.getElementById("send_pw").value;
+                        break;
+                    case 303:
+                        //nothing
+                        break;
+                    case 305:
+                        //nothing
+                        break;
+                    case 307:
+                        console.log("subject num is " + document.getElementById("subject_num").value);
+                        dto.subjectNum = document.getElementById("subject_num").value;
+                        break;
+                    case 309:
+                         console.log("lecture num is " + document.getElementById("lecture_num").value);
+                        dto.lectureNum = document.getElementById("lecture_num").value;
+                        break;
+                    case 311:
+                        //lectureInfo
+                        //activityList
+                        break;
+                    case 313:
+                        break;
+                    case 315:
+                        break;
+                    case 317:
+                        break;
+                    case 319:
+                        break;
+                    case 321:
+                        dto.subjectNum = dto.password =  document.getElementById("subjectNum").value;
+                        break;
+                }
+                
+                
 				//전송
 				socket.emit('data', dto);
                 console.log("send : "+dto.MessageNum);
 			}
 
 		</script>
-		
 
 		<input type="button" onclick="javascript:connectbtn();" id="socket" value="webpage"></input>
 
@@ -91,6 +172,8 @@
 		메세지 타입:<input type="text" id="send_message_type" ></input>
 		ID:<input type="text" id="send_id"></input>
         PW:<input type="text" id="send_pw"></input>
+        subjectNum:<input type="text" id="subject_num"></input>
+        lectureNum:<input type="text" id="lecture_num"></input>
 		<button type="button" onclick="sendData();">전송</button>
 	</body>
 </html>

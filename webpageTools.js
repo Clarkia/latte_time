@@ -3,27 +3,64 @@
 // Data types
 //**************
 
+//Request
 exports.newRequest = function(){
-       return new Request();
+    return new Request();
 }
-
 function Request(){
-       var MessageNum;
+    var MessageNum;
     var id;
     var password;
 }
 
+//Response
 exports.newResponse = function(){
-      return new Response();
+    return new Response();
 }
-
 function Response() {
-      var MessageNum;
+    var MessageNum;
     var id;
     var success;
 
 }
 
+//SubjectInfo      
+function SubjectInfo(subjectNum,subjectName,className){
+    this.subjectNum = subjectNum; //과목 번호
+    this.subjectName = subjectName; //과목 이름
+    this.className = className; //반 이름
+}
+exports.newSubjectInfo = function(subjectNum,subjectName,className){
+    return new SubjectInfo(subjectNum,subjectName,className);
+}
+
+//LectureInfo
+function LectureInfo(lecNum,lecName){
+    this.lecNum = lecNum;
+    this.lecName = lecName;
+}
+exports.newLectureInfo = function(lecNum,lecName){
+    return new LectureInfo(lecNum,lecName);
+}
+//ActivityInfo
+function ActivityInfo(actImg,actName,actType,actNum){
+    this.actImg = actImg;
+    this.actName = actName;
+    this.actType = actType;
+    this.actNum = actNum;
+}
+exports.newActivityInfo = function(actImg,actName,actType,actNum){
+    return new ActivityInfo(actImg,actName,actType,actNum);
+}
+
+//Attend Info
+function AttendInfo(studentNum,students){
+    this.studentNum = studentNum;
+    this.students = students;
+}
+exports.newAttendInfo = function(studentNum,students){
+    return new AttendInfo(studentNum,students);
+}
 
 exports.CLIENT_REQUEST_LOGIN  =  301;
 exports.SERVER_RESPONSE_LOGIN=	302;
