@@ -21,13 +21,69 @@ function Response() {
       var MessageNum;
     var id;
     var success;
+    var subjectList;
+
+}
+
+exports.newIdSocekt = function(){
+      return new ID_SOCKET_PAIR();
+}
+
+function ID_SOCKET_PAIR() {
+      var id;
+    var socket;
+    var deviceType;
+    var manType;
 
 }
 
 
+exports.newSubjectInfo = function(){
+      return new SubjectInfo();
+}
+
+function SubjectInfo() {
+      var subjectNum;
+    var subjectName;
+     var className;
+
+}
+
+exports.newLectureInfo = function(){
+      return new LectureInfo();
+}
+
+function LectureInfo() {
+      var lecNum;
+    var lecName;
+     
+}
+
+exports.newActivityInfo = function(){
+      return new ActivityInfo();
+}
+
+function ActivityInfo() {
+      var actImg;
+    var actName;
+    var actType;
+    var actNum;
+     
+}
+
+
+
+exports.TEACHER=1;
+exports.STUDENT=2;
+
+exports.MOBILE=1;
+exports.WEBPAGE=2;
+
 
 exports.CLIENT_REQUEST_LOGIN = 101;
 exports.SERVER_RESPONSE_LOGIN = 102;
+
+
 exports.CLIENT_REQUEST_SUBJECTLIST = 103;
 exports. SERVER_RESPONSE_SUBJECTLIST = 104;
 exports. CLIENT_REQUEST_LECTURELIST = 105;
@@ -38,6 +94,9 @@ exports. CLIENT_REQUEST_STARTACTIVITY = 109;
 exports. SERVER_RESPONSE_STARTACTIVITY = 110;
 exports. CLIENT_REQUEST_CONTENTLIST = 111;
 exports. SERVER_RESPONSE_CONTENTLIST = 112;
+
+
+
 exports. SERVER_REQUEST_STARTGROUPACTIVITY = 113; 
 exports. CLIENT_RESPONSE_STARTGROUPACTIVITY = 114;
 exports. CLIENT_REQUEST_GROUPDECISION = 115;

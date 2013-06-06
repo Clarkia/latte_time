@@ -16,7 +16,7 @@
         <!-- about jquery touch punch that allow us to use jquery ui with mobile enviroment -->
         <link href="http://code.jquery.com/ui/1.8.21/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
    
-   <script src="/socket.io/socket.io.js"></script>
+   <script src="http://lattetime.cafe24.com:9999/socket.io/socket.io.js"></script>
         
     </head>
     <body> 
@@ -46,7 +46,7 @@
 					document.getElementById('socket').style.visibility='hidden';
 
 			socket = io.connect('http://lattetime.cafe24.com:9999');
-        //  socket = io.connect('http://latteio.grapeprince.c9.io');
+     //     socket = io.connect('http://latteio.grapeprince.c9.io');
 
  socket.on('data', function (res) {
         console.log("res received messageNum :  "+res.MessageNum);

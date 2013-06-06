@@ -43,8 +43,8 @@
                 console.log("Connection...");
 				document.getElementById('socket').style.visibility='hidden';
 
-		    //	socket = io.connect('http://lattetime.cafe24.com:9999');
-                socket = io.connect('http://latte_time.snowyjune.c9.io');
+		    	socket = io.connect('http://lattetime.cafe24.com:9999');
+        //        socket = io.connect('http://latte_time.snowyjune.c9.io');
 
                 socket.on('data', function (res) {
                     console.log("result : messageNum - "+res.MessageNum);

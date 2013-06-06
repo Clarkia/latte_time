@@ -62,6 +62,25 @@ exports.newAttendInfo = function(studentNum,students){
     return new AttendInfo(studentNum,students);
 }
 
+
+exports.newIdSocekt = function(){
+      return new ID_SOCKET_PAIR();
+}
+
+function ID_SOCKET_PAIR() {
+      var id;
+    var socket;
+    var deviceType;
+    var manType;
+
+}
+
+exports.TEACHER=1;
+exports.STUDENT=2;
+
+exports.MOBILE=1;
+exports.WEBPAGE=2;
+
 exports.CLIENT_REQUEST_LOGIN  =  301;
 exports.SERVER_RESPONSE_LOGIN=	302;
 exports.CLIENT_REQUEST_LOGOUT=	303;

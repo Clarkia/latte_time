@@ -2,7 +2,7 @@
 // Data types
 //**************
 
-var ID_CONN_PAIR = []; //Logged id user list
+var ID_SOCKET_PAIR = [];//Logged id user list
 var mysqlConn; 
 var socket;
 var WebpageTools = require("./webpageTools");
@@ -12,8 +12,9 @@ var WebpageTools = require("./webpageTools");
 // Main Logic Function
 //*********************
 
-exports.call = function(_socket, received, mysqlConnection){
-	
+exports.call = function(_socket, received, mysqlConnection, _ID_SOCKET_PAIR){
+	 
+    ID_SOCKET_PAIR = _ID_SOCKET_PAIR; 
     mysqlConn = mysqlConnection;
     socket = _socket;
     
@@ -87,8 +88,6 @@ function clientRequestLogin(received){
          console.log( " rrrr : "+rows[0].teacherPw);
          
          if( received.password == rows[0].teacherPw){
-             //ID 넣기
-             ID_CONN_PAIR.push(rows[0].teacherNum);
              res.is_success = 1;
          }
     }
@@ -109,9 +108,12 @@ function clientRequestLogout(received){
     
     res.MessageNum = WebpageTools.SERVER_RESPONSE_LOGOUT;
     
-    for(var i = 0 ; i <  ID_CONN_PAIR.length() ; i++){
-        if(ID_CONN_PAIR[i] == received.id)
-            ID_CONN_PAIR.pop();
+    for(var i = 0 ; i <  ID_SOCKET_PAIR.length() ; i++){
+        if(ID_SOCKET_PAIR[i].id == received.id){
+          if( ID_SOCKET_PAIR[i].deviceType = WebpageTools.WEBPAGE){
+             ID_CONN_PAIR.pop();
+          }
+        }
     }
     
     

@@ -16,7 +16,7 @@
         <!-- about jquery touch punch that allow us to use jquery ui with mobile enviroment -->
         <link href="http://code.jquery.com/ui/1.8.21/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
    
-   <script src="/socket.io/socket.io.js"></script>
+   <script src="http://lattetime.cafe24.com:9999/socket.io/socket.io.js"></script>
         
     </head>
 	<body> 
@@ -31,12 +31,11 @@
 				var MessageNum; //Integer
 				var id; // String
                 var password; //String
+                var subjectNum; //Integer
+                var lectureNum; //Integer
+                var activity; //Integer
 			}
 			
-            
-            
-                
-                
 			//***********
 			// 함수
 			//***********
@@ -46,7 +45,7 @@
 					document.getElementById('socket').style.visibility='hidden';
 
 			socket = io.connect('http://lattetime.cafe24.com:9999');
-        //  socket = io.connect('http://latteio.grapeprince.c9.io');
+    //      socket = io.connect('http://latteio.grapeprince.c9.io');
 
  socket.on('data', function (res) {
         console.log("res received messageNum :  "+res.MessageNum);
@@ -55,6 +54,18 @@
         
         if( parseInt(res.MessageNum, 10) == 102) {
             console.log("res is_success : "+res.is_success);
+        }
+        else if( parseInt(res.MessageNum, 10) == 104) {
+            console.log("res subjectList : "+res.subjectList);
+        }
+        else if( parseInt(res.MessageNum, 10) == 106) {
+            console.log("res lectureList : "+res.lectureList);
+        }
+        else if( parseInt(res.MessageNum, 10) == 108) {
+            console.log("res today_activity : "+res.today_activity);
+        }
+        else if( parseInt(res.MessageNum, 10) == 112) {
+            console.log("res activityList : "+res.activityList);
         }
         
         });
@@ -76,10 +87,20 @@
 				dto.MessageNum = document.getElementById("send_message_type").value;
 				dto.id = document.getElementById("send_id").value;
                 dto.password =  document.getElementById("send_pw").value;
-				
+                dto.subjectNum =  document.getElementById("send_subject").value;
+                dto.lectureNum =  document.getElementById("send_lecture").value;
+                dto.activityNum =  document.getElementById("send_activity").value;
+                
 				//전송
 				socket.emit('data', dto);
-                console.log("send : "+dto.MessageNum);
+                
+                console.log("MessageNum : "+dto.MessageNum);
+                console.log("id : "+dto.id);
+                console.log("password : "+dto.password);
+                console.log("subjectNum : "+dto.subjectNum);
+                console.log("lectureNum : "+dto.lectureNum);
+                console.log("activityNum : "+dto.activityNum);
+                
 			}
 
 		</script>
@@ -91,6 +112,10 @@
 		메세지 타입:<input type="text" id="send_message_type" ></input>
 		ID:<input type="text" id="send_id"></input>
         PW:<input type="text" id="send_pw"></input>
+        subjectNum:<input type="text" id="send_subject"></input>
+        lectureNum:<input type="text" id="send_lecture"></input>
+        activityNum:<input type="text" id="send_activity"></input>
+        
 		<button type="button" onclick="sendData();">전송</button>
 	</body>
 </html>

@@ -1,7 +1,7 @@
 
 
 
-var ID_CONN_PAIR = [];
+var ID_SOCKET_PAIR = [];
 var mysqlConn;
 var socket;
 
@@ -10,20 +10,18 @@ var StudentTools = require("./studentTools");
 //**************
 // Functions
 //**************
-exports.call = function(_socket, received, _ID_CONN_PAIR, mysqlConnection){
-    
-    ID_CONN_PAIR = _ID_CONN_PAIR;
+exports.call = function(_socket, received, mysqlConnection, _ID_SOCKET_PAIR){
+ 
+    ID_SOCKET_PAIR = _ID_SOCKET_PAIR;
     mysqlConn = mysqlConnection;
     socket = _socket;
     
-	
 	console.log("student controller call function");
     
-    
 	//MessageNum에 따라서 분기 - 각각의 처리에 맞는 함수 호출
-	    switch( parseInt(received.MessageNum, 10) ){
+	switch( parseInt(received.MessageNum, 10) ){
 	
-    case StudentTools.CLIENT_REQUEST_LOGIN:
+        case StudentTools.CLIENT_REQUEST_LOGIN:
         clientRequestLogin(received);
 			break;
 		case 203:
@@ -90,6 +88,7 @@ function clientRequestLogin(received){
          console.log( " rrrr : "+rows[0].studentPw);
          
          if( received.password == rows[0].studentPw){
+             
              res.is_success = 1;
          }
     }

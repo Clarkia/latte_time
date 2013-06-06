@@ -18,9 +18,30 @@ var webpage_controller = require("./webpageController");
 var teacher_controller = require("./teacherController");
 var student_controller = require("./studentController");
 
-//server.listen(9999);
-server.listen(process.env.PORT);
+server.listen(9999);
+//server.listen(process.env.PORT);
 
+
+////////상수///////
+
+function ID_SOCKET_PAIR() {
+      var id;
+    var socket;
+    var deviceType;
+    var manType;
+
+}
+
+var TEACHER = 1;
+var STUDENT = 2;
+
+var MOBILE = 1;
+var WEBPAGE = 2;
+
+
+var ID_SOC_PAIR = [];
+
+    
 var mysqlConfig = {
     host : "lattetime.cafe24.com",
     port : "3306",
@@ -53,6 +74,10 @@ app.get('/student', function(req, res) {
     res.sendfile(__dirname + '/student.html');
 });
 
+app.get('/nathan', function(req, res) {
+    console.log("===============================================");
+    res.sendfile(__dirname + '/nathan.html');
+});
 
 
 //url 들어오면 파일 주는 부분
@@ -93,7 +118,6 @@ app.use(function(request, response, next){
 //**************
 //리스닝
 //**************
-//var ID_CONN_PAIR = [];
 
 console.log("Listening....");
 console.log("ip : " + process.env.IP + ", port : " + process.env.PORT);
@@ -118,20 +142,43 @@ socket.on('data', function( data) {
     //JSON이용해서 Message Parse
 	received = data;
  
+    var tempIdConn
 
     //메세지에 따라 처리
 		switch(parseInt(received.MessageNum / 100, 10)){
 			case 1:
 				console.log("Messeage num 100 ~ 199 : Teacher Mobile");
-                teacher_controller.call(socket, received, conn);
+                   //커넥션을 배열로 유지
+             tempIdConn =  new ID_SOCKET_PAIR();
+             tempIdConn.id = received.id;
+             tempIdConn.socket = socket;
+             tempIdConn.deviceType = MOBILE;
+             tempIdConn.manType = TEACHER;
+             ID_SOC_PAIR.push(tempIdConn);
+             
+                teacher_controller.call(socket, received,  conn,  ID_SOC_PAIR);
 				break;
 			case 2:
 				console.log("Messeage num 200 ~ 299 : Student Mobile");
-			student_controller.call(socket, received, conn);
+                   //커넥션을 배열로 유지
+             tempIdConn = new ID_SOCKET_PAIR();
+             tempIdConn.id = received.id;
+             tempIdConn.socket = socket;
+             tempIdConn.deviceType = MOBILE;
+             tempIdConn.manType = STUDENT;
+             ID_SOC_PAIR.push(tempIdConn);
+                student_controller.call(socket, received,  conn, ID_SOC_PAIR);
 				break;
 			case 3:
                 console.log("Messeage num 300 ~ 399 : Web page");
-                webpage_controller.call(socket, received, conn);
+                   //커넥션을 배열로 유지
+             tempIdConn =   new ID_SOCKET_PAIR();
+             tempIdConn.id = received.id;
+             tempIdConn.socket = socket;
+             tempIdConn.deviceType = WEBPAGE;
+             tempIdConn.manType = TEACHER;
+             ID_SOC_PAIR.push(tempIdConn);
+                webpage_controller.call(socket, received,  conn, ID_SOC_PAIR);
 				break;
 			default: //에러 
 				;
