@@ -33,7 +33,7 @@
                 var password; //String
                 var subjectNum; //Integer
                 var lectureNum; //Integer
-                var activity; //Integer
+                var activityType; //Integer
 			}
 			
 			//***********
@@ -89,7 +89,7 @@
                 dto.password =  document.getElementById("send_pw").value;
                 dto.subjectNum =  document.getElementById("send_subject").value;
                 dto.lectureNum =  document.getElementById("send_lecture").value;
-                dto.activityNum =  document.getElementById("send_activity").value;
+                dto.activityType =  document.getElementById("send_activity").value;
                 
 				//전송
 				socket.emit('data', dto);
@@ -99,7 +99,7 @@
                 console.log("password : "+dto.password);
                 console.log("subjectNum : "+dto.subjectNum);
                 console.log("lectureNum : "+dto.lectureNum);
-                console.log("activityNum : "+dto.activityNum);
+                console.log("activityNum : "+dto.activityType);
                 
 			}
 
@@ -114,7 +114,7 @@
         PW:<input type="text" id="send_pw"></input>
         subjectNum:<input type="text" id="send_subject"></input>
         lectureNum:<input type="text" id="send_lecture"></input>
-        activityNum:<input type="text" id="send_activity"></input>
+        activityType:<input type="text" id="send_activity"></input>
         
 		<button type="button" onclick="sendData();">전송</button>
 	</body>

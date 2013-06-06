@@ -43,6 +43,12 @@ exports.STUDENT=2;
 exports.MOBILE=1;
 exports.WEBPAGE=2;
 
+exports.PPT = "PPT";
+exports.WORKSHEET =  "WORKSHEET";
+exports.ATTENDANCE =  "ATTENDANCE";
+exports.GROUP =  "GROUP";
+
+
 exports.CLIENT_REQUEST_LOGIN   = 201;
 exports.SERVER_RESPONSE_LOGIN  = 202;
 

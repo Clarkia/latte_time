@@ -18,8 +18,8 @@ var webpage_controller = require("./webpageController");
 var teacher_controller = require("./teacherController");
 var student_controller = require("./studentController");
 
-server.listen(9999);
-//server.listen(process.env.PORT);
+//server.listen(9999);
+server.listen(process.env.PORT);
 
 
 ////////상수///////

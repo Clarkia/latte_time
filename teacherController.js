@@ -2,6 +2,10 @@
 
 
 var ID_SOCKET_PAIR = [];
+
+
+var ATTEND_INFO = [];
+
 var mysqlConn;
 var socket;
 
@@ -26,8 +30,6 @@ exports.call = function(_socket, received, mysqlConnection, _ID_SOCKET_PAIR){
    console.log("lectureNum : "+received.lectureNum);    
    console.log("activityNum : "+received.activityNum);    
     
-    
-    
 
 	//MessageNum에 따라서 분기 - 각각의 처리에 맞는 함수 호출
 	switch( parseInt(received.MessageNum, 10) ){
@@ -48,9 +50,6 @@ exports.call = function(_socket, received, mysqlConnection, _ID_SOCKET_PAIR){
 			break;
 		case TeacherTools.CLIENT_REQUEST_CONTENTLIST  :
             clientRequestContentList(received);
-			break;
-		
-        case 117:
 			break;
 		case 119:
 			break;
@@ -341,15 +340,24 @@ function clientRequestStartActivity(received){
     res.id = received.id;
     res.success = 1; //별일 없으면 요청은 성공한다. 
    
-   
-    res.success = 0; 
+    if( received.activityType == TeacherTools.ATTENDANCE ){
+        
+         var req = TeacherTools.newRequest();
+    req.MessageNum = TeacherTools.SERVER_REQUEST_STARTATTENDACTIVITY;
+    req.id = received.id;
+    req.success = 1; //별일 없으면 요청은 성공한다. 
     
+
+        for( var i=0 ; i<ID_SOCKET_PAIR.length ; i++){       
+            if( ID_SOCKET_PAIR[i].deviceType == TeacherTools.MOBILE){                    
+                     ID_SOCKET_PAIR[i].socket.emit('data', req);
+            }
+        }
+    }
     
     //결과는 마이에스큐엘까지 끝난 다음 반환한다. 
         //결과 보내기
         socket.emit('data', res) ;
-    
-    
  
 }
 
