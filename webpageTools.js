@@ -35,12 +35,14 @@ exports.newSubjectInfo = function(subjectNum,subjectName,className){
 }
 
 //LectureInfo
-function LectureInfo(lecNum,lecName){
+function LectureInfo(lecNum,lecName,lecDate,lecOrder){
     this.lecNum = lecNum;
     this.lecName = lecName;
+    this.lecDate = lecDate;
+    this.lecOrder = lecOrder;
 }
-exports.newLectureInfo = function(lecNum,lecName){
-    return new LectureInfo(lecNum,lecName);
+exports.newLectureInfo = function(lecNum,lecName,lecDate,lecOrder){
+    return new LectureInfo(lecNum,lecName,lecDate,lecOrder);
 }
 //ActivityInfo
 function ActivityInfo(actImg,actName,actType,actNum){
@@ -54,12 +56,15 @@ exports.newActivityInfo = function(actImg,actName,actType,actNum){
 }
 
 //Attend Info
-function AttendInfo(studentNum,students){
+function AttendInfo(studentNum,attendence,lectureNum,studentImg,studentId){
     this.studentNum = studentNum;
-    this.students = students;
+    this.attendence = attendence;
+    this.lectureNum = lectureNum;
+    this.studentImg = studentImg;
+    this.studentId = studentId;
 }
-exports.newAttendInfo = function(studentNum,students){
-    return new AttendInfo(studentNum,students);
+exports.newAttendInfo = function(studentNum,attendence,lectureNum,studentImg,studentId){
+    return new AttendInfo(studentNum,attendence,lectureNum,studentImg,studentId);
 }
 
 
@@ -91,9 +96,8 @@ exports.CLIENT_REQUEST_VIEWLECTURELIST=	307;
 exports.SERVER_RESPONSE_SELECTCLASS=	308;
 exports.CLIENT_REQUEST_CLASSORGANIZE=	309;
 exports.SERVER_RESPONSE_CLASSORGANIZE=	310;
-exports.CLIENT_REQUEST_CLASSSAVE=	311;
-	
-exports.SERVER_RESPONSE_CLASSSAVE=	312;
+exports.CLIENT_REQUEST_ADDACTIVITY_TO_LECTURE=	311;
+exports.SERVER_RESPONSE_ADDACTIVITY_TO_LECTURE=	312;
 exports.CLIENT_REQUEST_PPTLIST=	313;
 exports.SERVER_RESPONSE_PPTLIST=	314;
 exports.CLIENT_REQUEST_PPTUPLOAD=	315;
@@ -103,7 +107,11 @@ exports.SERVER_RESPONSE_WORKSHEETLIST=	318;
 exports.CLIENT_REQUEST_WORKSHEETUPLOAD=	319;
 exports.SERVER_RESPONSE_WORKSHEETUPLOAD	=320;
 exports.CLIENT_REQUEST_VIEWATTENDLIST=	321;
-exports.SERVER_REQUEST_VIEWATTENDLIST=	322;
+exports.SERVER_RESPONSE_VIEWATTENDLIST=	322;
+exports.CLIENT_REQUEST_NEWLECTURE=    323;
+exports.SERVER_REQUEST_NEWLECTURE=	324;
+exports.CLIENT_REQUEST_DELETE_ACTIVITY_FROM_LECTURE=    325;
+exports.SERVER_REQUEST_DELETE_ACTIVITY_FROM_LECTURE=	326;
 
 
 
