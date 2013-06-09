@@ -43,8 +43,8 @@
                 console.log("Connection...");
 				document.getElementById('socket').style.visibility='hidden';
 
-		    	socket = io.connect('http://lattetime.cafe24.com:9999');
-        //        socket = io.connect('http://latte_time.snowyjune.c9.io');
+		//    	socket = io.connect('http://lattetime.cafe24.com:9999');
+                socket = io.connect('http://latte_time.snowyjune.c9.io');
 
                 socket.on('data', function (res) {
                     console.log("result : messageNum - "+res.MessageNum);
@@ -90,6 +90,10 @@
                             }
                             break;
                         case 312:
+                            if(res.success == 1)
+                                console.log("insertion success");
+                            else
+                                console.log("insertion failed");
                             break;
                         case 314:
                             break;
@@ -100,6 +104,21 @@
                         case 320:
                             break;
                         case 322:
+                            console.log("result : attendInfoList ");
+                            var list = res.attendInfo;
+                            for(var i = 0 ; i <list.length ; i++){
+                                console.log( (i+1) +"th item =====================================");
+                                console.log("=> studentNum : " + list[i].studentNum +" ");
+                                console.log("=> attendence : " + list[i].attendence +" ");
+                                console.log("=> studentImg : " + list[i].studentImg +" ");
+                                console.log("=> studentId : " + list[i].studentId +"\n");
+                            }
+                            break;
+                        case 324:
+                            if(res.success == 1)
+                                console.log("deletion success");
+                            else
+                                console.log("deletion failed");
                             break;
                     }
             
@@ -142,8 +161,8 @@
                         dto.lectureNum = document.getElementById("lecture_num").value;
                         break;
                     case 311:
-                        //lectureInfo
-                        //activityList
+                        dto.lectureNum = document.getElementById("lecture_num").value;
+                        dto.activityNum =  document.getElementById("activity_num").value;
                         break;
                     case 313:
                         break;
@@ -154,7 +173,11 @@
                     case 319:
                         break;
                     case 321:
-                        dto.subjectNum = dto.password =  document.getElementById("subjectNum").value;
+                        dto.subjectNum = dto.password =  document.getElementById("subject_num").value;
+                        break;
+                    case 325:
+                        dto.lectureNum = document.getElementById("lecture_num").value;
+                        dto.activityNum =  document.getElementById("activity_num").value;
                         break;
                 }
                 
@@ -174,6 +197,7 @@
         PW:<input type="text" id="send_pw"></input>
         subjectNum:<input type="text" id="subject_num"></input>
         lectureNum:<input type="text" id="lecture_num"></input>
+        activityNum:<input type="text" id="activity_num"></input>
 		<button type="button" onclick="sendData();">전송</button>
 	</body>
 </html>

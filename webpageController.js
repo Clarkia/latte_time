@@ -37,8 +37,11 @@ exports.call = function(_socket, received, mysqlConnection, _ID_SOCKET_PAIR){
         case WebpageTools.CLIENT_REQUEST_CLASSORGANIZE: //309
             ClientRequestClassOrganize(received);
             break;
-        case WebpageTools.CLIENT_REQUEST_CLASSSAVE: //311
-            ClientRequestClassSave(received);
+        case WebpageTools.CLIENT_REQUEST_ADDACTIVITY_TO_LECTURE: //311
+            ClientRequestAddActivityToLecture(received);
+            break;
+        case WebpageTools.CLIENT_REQUEST_DELETE_ACTIVITY_FROM_LECTURE: //325
+            ClientRequestDeleteActivityFromLecture(received);
             break;
         case WebpageTools.CLIENT_REQUEST_PPTLIST: //313
             break;
@@ -50,6 +53,9 @@ exports.call = function(_socket, received, mysqlConnection, _ID_SOCKET_PAIR){
             break;
         case WebpageTools.CLIENT_REQUEST_VIEWATTENDLIST: //321
             ViewAttendList(received);
+            break;
+        case WebpageTools.CLIENT_REQUEST_NEWLECTURE : //323
+            ClientRequestNewLecture(received);
             break;
         default:
             break;
@@ -147,7 +153,7 @@ function clientRequestClasslist(received){
 
                 list.push(WebpageTools.newSubjectInfo(rows[i].subjectNum
                                                     ,rows[i].subjectName
-                                                    ,rows[i].subjectClass));
+                                                    ,rows[i].className));
             }         
             
             res.success = 1;
@@ -183,7 +189,9 @@ function ClientRequestViewLectureList(received){
             for(var i = 0 ; i < rows.length ; i++){ //결과 -  for문 돌면서 list에 push
               
               list.push(WebpageTools.newLectureInfo(rows[i].lectureNum
-                                                    ,rows[i].lectureName));
+                                                    ,rows[i].lectureName
+                                                    ,0
+                                                    ,0));
             }         
             
             res.success = 1;
@@ -234,11 +242,64 @@ function ClientRequestClassOrganize(received){
     
 }
 
-// CLASS SAVE
-function ClientRequestClassSave(received){
+// ADD ACTIVITY TO LECTURE - attach activities
+function ClientRequestAddActivityToLecture(received){
     var res = WebpageTools.newResponse();
     
+    res.MessageNum = WebpageTools.SERVER_RESPONSE_ADDACTIVITY_TO_LECTURE;
+    res.id = received.id;
+
+    //DB insertion
+    //  -latte-lecture activity
+    var query = "insert into latte_lecture_activity (lectureNum, activityNum) select "+ received.lectureNum +"," +received.activityNum
+                +" from latte_lecture_activity where not exists " 
+                + " (select * from latte_lecture_activity where lectureNum = " +  received.lectureNum + " and activityNum = " + received.activityNum + ") limit 1";
     
+     console.log(query);
+    
+    mysqlConn.query(query, function(err, rows) {
+        if(err){
+            console.log("mysql query err");
+            console.log(err);
+            res.success = 0;
+        }
+        else{
+            res.success = 1;
+        }
+        
+        //send result to client
+        socket.emit('data', res) ;
+    
+    });
+    
+}
+
+// DELETE ACTIVITY FROM LECTURE - dettach activities
+function  ClientRequestDeleteActivityFromLecture(received){
+    var res = WebpageTools.newResponse();
+     
+    res.MessageNum = WebpageTools.SERVER_RESPONSE_DELETE_ACTIVITY_FROM_LECTURE;
+    res.id = received.id;
+    
+    //DB deletion
+    var query = "delete from latte_lecture_activity where lectureNum = " + received.lectureNum + " and activityNum = " + received.activityNum;
+    
+     console.log(query);
+    
+     mysqlConn.query(query, function(err, rows) {
+        if(err){
+            console.log("mysql query err");
+            console.log(err);
+            res.success = 0;
+        }
+        else{
+            res.success = 1;
+        }
+        
+        //send result to client
+        socket.emit('data', res) ;
+    
+    });
 }
 
 // VIEW ATTENDLIST
@@ -246,9 +307,18 @@ function ViewAttendList(received){
 
     var res = WebpageTools.newResponse();
     var list = [];
+    
     res.MessageNum = WebpageTools.SERVER_RESPONSE_VIEWATTENDLIST;
     
-     var query = "";
+    var query = " select studentNum,attendance,lectureNum, studentId,studentImg "
+                + " from "
+                + " (select latte_attendInfo.studentNum,latte_attendInfo.attendance,latte_attendInfo.lectureNum, latte_student.studentId,latte_student.studentImg "
+                + " from latte_student,latte_attendInfo "
+                + " where latte_student.studentNum = latte_attendInfo.studentNum) as t1 "
+                + " where lectureNum in "
+                + " (select lectureNum from latte_lecture where subjectNum = " + received.subjectNum +")";
+
+    
     
      mysqlConn.query(query, function (err, rows){
         if(err){
@@ -260,18 +330,47 @@ function ViewAttendList(received){
         else if( rows.length ) {
             
             for(var i = 0 ; i < rows.length ; i++){ //결과 -  for문 돌면서 list에 push
-                var attend_inf = WebpageTools.newAttendInfo();
-               
-                console.log(i+"th tuple : ");
                 
-                list.push(attend_inf);
+                //studentNum,attendence,lectureNum,studentImg,studentId
+                list.push(WebpageTools.newAttendInfo(rows[i].studentNum
+                                                    , rows[i].attendance
+                                                    , rows[i].lectureNum
+                                                    , rows[i].studentImg
+                                                    , rows[i].studentId));
             }         
             
             res.success = 1;
-            res.subjectList = list;
+            res.attendInfo = list;
         }
         //send to client
         socket.emit('data', res) ;
+    });
+    
+}
+// CREATE NEW LECTURE
+function ClientRequestNewLecture(received){
+    var res = WebpageTools.newResponse();
+    res.MessageNum = WebpageTools.SERVER_RESPONSE_NEWLECTURE;
+    
+    var query = "insert into latte_lecture(lectureName,lectureDate,lectureOrder,subjectNum)"
+                + " values('" + received.lectureInfo.lectureName + "','" 
+                + received.lectureInfo.lectureDate+ "', "
+                + received.lectureInfo.lectureOrder + ", " 
+                + received.subjectNum+")";
+    
+    mysqlConn.query(query, function(err, rows) {
+        if(err){
+            console.log("mysql query err");
+            console.log(err);
+            res.success = 0;
+        }
+        else{
+            res.success = 1;
+        }
+        
+        //send result to client
+        socket.emit('data', res) ;
+    
     });
     
 }
