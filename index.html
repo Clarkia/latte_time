@@ -16,7 +16,8 @@
         <!-- about jquery touch punch that allow us to use jquery ui with mobile enviroment -->
         <link href="http://code.jquery.com/ui/1.8.21/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
    
-   <script src="/socket.io/socket.io.js"></script>
+   <script src="http://lattetime.cafe24.com:8888/socket.io/socket.io.js"></script>
+   
         
     </head>
     <body> 
@@ -43,8 +44,11 @@
                 console.log("Connection...");
 				document.getElementById('socket').style.visibility='hidden';
 
-		//    	socket = io.connect('http://lattetime.cafe24.com:9999');
-                socket = io.connect('http://latte_time.snowyjune.c9.io');
+
+		 //   	socket = io.connect('http://lattetime.cafe24.com:7777');
+		      socket = io.connect('http://lattetime.cafe24.com:8888');
+		 //     socket = io.connect('http://lattetime.cafe24.com:9999'); 
+    //            socket = io.connect('http://latte_time.snowyjune.c9.io');
 
                 socket.on('data', function (res) {
                     console.log("result : messageNum - "+res.MessageNum);
@@ -66,7 +70,7 @@
                                 console.log((i+1) +"th item =====================================");
                                 console.log("=> subjetNum : " + list[i].subjectNum +" ");
                                 console.log("=> subjetName : " + list[i].subjectName +" ");
-                                console.log("=> subjetClass : " + list[i].subjectClass +" \n");
+                                console.log("=> className : " + list[i].className +" \n");
                             }
                             break;
                         case 308:

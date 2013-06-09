@@ -16,7 +16,7 @@
         <!-- about jquery touch punch that allow us to use jquery ui with mobile enviroment -->
         <link href="http://code.jquery.com/ui/1.8.21/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
    
-   <script src="http://lattetime.cafe24.com:9999/socket.io/socket.io.js"></script>
+   <script src="http://lattetime.cafe24.com:8888/socket.io/socket.io.js"></script>
         
     </head>
 	<body> 
@@ -36,6 +36,14 @@
                 var activityType; //Integer
 			}
 			
+function AttendInfo() {
+      var StudentNum;
+    var attendance;
+    var attendanceInfoNum;
+    var studentImg;
+     
+}
+			
 			//***********
 			// 함수
 			//***********
@@ -44,7 +52,9 @@
     console.log("Connection...");
 					document.getElementById('socket').style.visibility='hidden';
 
-			socket = io.connect('http://lattetime.cafe24.com:9999');
+		 //   	socket = io.connect('http://lattetime.cafe24.com:7777');
+		      socket = io.connect('http://lattetime.cafe24.com:8888');
+		 //     socket = io.connect('http://lattetime.cafe24.com:9999'); 
     //      socket = io.connect('http://latteio.grapeprince.c9.io');
 
  socket.on('data', function (res) {
@@ -66,6 +76,17 @@
         }
         else if( parseInt(res.MessageNum, 10) == 112) {
             console.log("res activityList : "+res.activityList);
+        }
+        
+        else if( parseInt(res.MessageNum, 10) == 136) {
+            console.log("res attendInfo : "+res.attendInfo);
+        }
+        
+        else if( parseInt(res.MessageNum, 10) == 137) {
+            console.log("res id : "+res.id);
+        }
+        else if( parseInt(res.MessageNum, 10) == 122) {
+            console.log("res pptInfo : "+res.pptInfo);
         }
         
         });
@@ -90,6 +111,33 @@
                 dto.subjectNum =  document.getElementById("send_subject").value;
                 dto.lectureNum =  document.getElementById("send_lecture").value;
                 dto.activityType =  document.getElementById("send_activity").value;
+                 dto.activityNum =  document.getElementById("send_activityNum").value;
+              dto.number =  document.getElementById("send_number").value;
+                dto.currentPPT =  document.getElementById("send_currentPPT").value;
+                  dto.writingLayer =  document.getElementById("send_writingLayer").value;
+              
+               
+              
+                dto.attendInfoList = [];
+                if( parseInt(dto.MessageNum, 10) == 139 ) {
+                
+                    var tempAttendInfo = new AttendInfo();
+                    tempAttendInfo.studentNum = 0;
+                    tempAttendInfo.attendance = 1;
+                    dto.attendInfoList.push(tempAttendInfo);
+                    
+                    tempAttendInfo = new AttendInfo();
+                    tempAttendInfo.studentNum = 1;
+                    tempAttendInfo.attendance = 1;
+                    dto.attendInfoList.push(tempAttendInfo);
+                    
+                    tempAttendInfo = new AttendInfo();
+                    tempAttendInfo.studentNum = 2 ;
+                    tempAttendInfo.attendance = 1 ;
+                    dto.attendInfoList.push(tempAttendInfo);
+                    
+                } 
+                
                 
 				//전송
 				socket.emit('data', dto);
@@ -99,8 +147,16 @@
                 console.log("password : "+dto.password);
                 console.log("subjectNum : "+dto.subjectNum);
                 console.log("lectureNum : "+dto.lectureNum);
-                console.log("activityNum : "+dto.activityType);
+                console.log("activityType : "+dto.activityType);
+                console.log("activityNum : "+dto.activityNum);
+                 console.log("number : " +dto.number);
                 
+                console.log(" dto.currentPPT = : " + dto.currentPPT );
+                 
+                  console.log(" dto.writingLayer : " + dto.writingLayer);
+                
+                
+            
 			}
 
 		</script>
@@ -115,6 +171,11 @@
         subjectNum:<input type="text" id="send_subject"></input>
         lectureNum:<input type="text" id="send_lecture"></input>
         activityType:<input type="text" id="send_activity"></input>
+        activityNum:<input type="text" id="send_activityNum"></input>
+        number:<input type="text" id="send_number"></input>
+         currentPPT:<input type="text" id="send_currentPPT"></input>
+          writingLayer:<input type="text" id="send_writingLayer"></input>
+      
         
 		<button type="button" onclick="sendData();">전송</button>
 	</body>

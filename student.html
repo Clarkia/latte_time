@@ -16,7 +16,7 @@
         <!-- about jquery touch punch that allow us to use jquery ui with mobile enviroment -->
         <link href="http://code.jquery.com/ui/1.8.21/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
    
-   <script src="http://lattetime.cafe24.com:9999/socket.io/socket.io.js"></script>
+   <script src="http://lattetime.cafe24.com:8888/socket.io/socket.io.js"></script>
         
     </head>
     <body> 
@@ -45,18 +45,21 @@
     console.log("Connection...");
 					document.getElementById('socket').style.visibility='hidden';
 
-			socket = io.connect('http://lattetime.cafe24.com:9999');
-     //     socket = io.connect('http://latteio.grapeprince.c9.io');
+		 //   	socket = io.connect('http://lattetime.cafe24.com:7777');
+		      socket = io.connect('http://lattetime.cafe24.com:8888');
+		 //     socket = io.connect('http://lattetime.cafe24.com:9999'); 
+      //    socket = io.connect('http://latteio.grapeprince.c9.io');
 
  socket.on('data', function (res) {
-        console.log("res received messageNum :  "+res.MessageNum);
+        console.log("res received MessageNum :  "+res.MessageNum);
         console.log("res id : "+res.id);
         console.log("res success : "+res.success);
         
         if( parseInt(res.MessageNum, 10) == 202) {
             console.log("res is_success : "+res.is_success);
         }
-        
+
+    
         });
               
                 
@@ -75,11 +78,15 @@
 				//dto에 입력 받은 데이터 넣기
 				dto.MessageNum = document.getElementById("send_message_type").value;
 				dto.id = document.getElementById("send_id").value;
-                dto.password =  document.getElementById("send_pw").value;
+        dto.password =  document.getElementById("send_pw").value;
+				dto.groupId =  document.getElementById("send_groupId").value;
 				
 				//전송
 				socket.emit('data', dto);
-                console.log("send : "+dto.MessageNum);
+        console.log("send : "+dto.MessageNum);
+        console.log("id : "+dto.id);
+        console.log("password : "+dto.password);
+        console.log("groupId : "+dto.groupId);
 			}
 
 		</script>
@@ -91,6 +98,7 @@
 		메세지 타입:<input type="text" id="send_message_type" ></input>
 		ID:<input type="text" id="send_id"></input>
         PW:<input type="text" id="send_pw"></input>
+        groupId:<input type="text" id="send_groupId"></input>
 		<button type="button" onclick="sendData();">전송</button>
 	</body>
 </html>

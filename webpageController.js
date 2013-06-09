@@ -111,19 +111,22 @@ function clientRequestLogout(received){
     
     res.id = received.id;
     res.success = 1; //별일 없으면 요청은 성공한다. 
+    res.is_success = 1; //send success
     
     res.MessageNum = WebpageTools.SERVER_RESPONSE_LOGOUT;
     
-    for(var i = 0 ; i <  ID_SOCKET_PAIR.length() ; i++){
+    //send response
+    socket.emit('data',res);   
+    
+    //pop from the list
+    for(var i = 0 ; i <  ID_SOCKET_PAIR.length ; i++){
         if(ID_SOCKET_PAIR[i].id == received.id){
           if( ID_SOCKET_PAIR[i].deviceType = WebpageTools.WEBPAGE){
-             ID_CONN_PAIR.pop();
+              ID_SOCKET_PAIR.splice(i, 1);
           }
         }
     }
     
-    
-    socket.emit('data',res);   
     
 }
 
@@ -153,7 +156,7 @@ function clientRequestClasslist(received){
 
                 list.push(WebpageTools.newSubjectInfo(rows[i].subjectNum
                                                     ,rows[i].subjectName
-                                                    ,rows[i].className));
+                                                    ,rows[i].subjectClass));
             }         
             
             res.success = 1;

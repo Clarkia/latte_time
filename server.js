@@ -18,29 +18,22 @@ var webpage_controller = require("./webpageController");
 var teacher_controller = require("./teacherController");
 var student_controller = require("./studentController");
 
+
+var TeacherTools = require("./teacherTools");
+
+
+//server.listen(7777);
+server.listen(8888);
 //server.listen(9999);
-server.listen(process.env.PORT);
+//server.listen(process.env.PORT);
 
 
 ////////상수///////
 
-function ID_SOCKET_PAIR() {
-      var id;
-    var socket;
-    var deviceType;
-    var manType;
-
-}
-
-var TEACHER = 1;
-var STUDENT = 2;
-
-var MOBILE = 1;
-var WEBPAGE = 2;
-
-
 var ID_SOC_PAIR = [];
-
+var classState = TeacherTools.newClassState();
+var pptShare = TeacherTools.newPPTShare();
+var groupShare = TeacherTools.newGroupShare();    
     
 var mysqlConfig = {
     host : "lattetime.cafe24.com",
@@ -141,45 +134,35 @@ socket.on('data', function( data) {
 
     //JSON이용해서 Message Parse
 	received = data;
- 
-    var tempIdConn
+
+console.log("groupShare : %j" , groupShare );
 
     //메세지에 따라 처리
 		switch(parseInt(received.MessageNum / 100, 10)){
 			case 1:
 				console.log("Messeage num 100 ~ 199 : Teacher Mobile");
                    //커넥션을 배열로 유지
-             tempIdConn =  new ID_SOCKET_PAIR();
-             tempIdConn.id = received.id;
-             tempIdConn.socket = socket;
-             tempIdConn.deviceType = MOBILE;
-             tempIdConn.manType = TEACHER;
-             ID_SOC_PAIR.push(tempIdConn);
-             
-                teacher_controller.call(socket, received,  conn,  ID_SOC_PAIR);
+               connectionRetreive(received.id, socket, TeacherTools.MOBILE, TeacherTools.TEACHER );
+                teacher_controller.call(socket, received,  conn,  ID_SOC_PAIR, classState, pptShare, groupShare);
 				break;
 			case 2:
 				console.log("Messeage num 200 ~ 299 : Student Mobile");
                    //커넥션을 배열로 유지
-             tempIdConn = new ID_SOCKET_PAIR();
-             tempIdConn.id = received.id;
-             tempIdConn.socket = socket;
-             tempIdConn.deviceType = MOBILE;
-             tempIdConn.manType = STUDENT;
-             ID_SOC_PAIR.push(tempIdConn);
-                student_controller.call(socket, received,  conn, ID_SOC_PAIR);
+             connectionRetreive(received.id, socket, TeacherTools.MOBILE, TeacherTools.STUDENT );
+                student_controller.call(socket, received,  conn, ID_SOC_PAIR, classState, groupShare);
 				break;
 			case 3:
                 console.log("Messeage num 300 ~ 399 : Web page");
                    //커넥션을 배열로 유지
-             tempIdConn =   new ID_SOCKET_PAIR();
-             tempIdConn.id = received.id;
-             tempIdConn.socket = socket;
-             tempIdConn.deviceType = WEBPAGE;
-             tempIdConn.manType = TEACHER;
-             ID_SOC_PAIR.push(tempIdConn);
+             connectionRetreive(received.id, socket, TeacherTools.WEBPAGE, TeacherTools.TEACHER );
                 webpage_controller.call(socket, received,  conn, ID_SOC_PAIR);
 				break;
+				
+			case 4:
+                console.log("Messeage num 400 ~ 499 : Sharing");
+                teacher_controller.call(socket, received,  conn,  ID_SOC_PAIR, classState, pptShare, groupShare);
+				break;
+
 			default: //에러 
 				;
 		}
@@ -191,5 +174,38 @@ socket.on('data', function( data) {
 
 });
 
-
+function connectionRetreive(id, socket, deviceType, manType){
+    
+     var tempIdConn
+     
+     //이미 커넥션이 들어가 있는 경우 빼버린다. 
+     
+     //새로 갱신해서 넣는다. 
+     
+     var i;
+     
+     for( i=0 ; i< ID_SOC_PAIR.length ; i++ ) {
+        if( ID_SOC_PAIR[i].deviceType == deviceType ){
+            if( ID_SOC_PAIR[i].manType == manType) {
+                if( ID_SOC_PAIR[i].id == id ) {
+                    ID_SOC_PAIR.splice(i, 1);
+                }
+            }
+        } 
+     }
+     
+       tempIdConn =   TeacherTools.newIdSocekt();
+       tempIdConn.id = id;
+       tempIdConn.socket = socket;
+             tempIdConn.deviceType = deviceType;
+             tempIdConn.manType = manType;
+             ID_SOC_PAIR.push(tempIdConn);
+    
+    for( i=0 ; i< ID_SOC_PAIR.length ; i++ ) {
+        console.log("i : " + i);
+        console.log("ID_SOC_PAIR[i].deviceType : " + ID_SOC_PAIR[i].deviceType );
+        console.log("ID_SOC_PAIR[i].manType : " + ID_SOC_PAIR[i].manType );
+        console.log("ID_SOC_PAIR[i].].id : " + ID_SOC_PAIR[i].id );
+    }
+}
 
