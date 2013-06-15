@@ -14,6 +14,8 @@ var server = http.createServer(app);
 var io = require('socket.io').listen(server);
 
 
+
+
 var webpage_controller = require("./webpageController");
 var teacher_controller = require("./teacherController");
 var student_controller = require("./studentController");
@@ -22,10 +24,9 @@ var student_controller = require("./studentController");
 var TeacherTools = require("./teacherTools");
 
 
-//server.listen(7777);
-server.listen(8888);
-//server.listen(9999);
-//server.listen(process.env.PORT);
+app.use(express.bodyParser({uploadDir:'./'}));
+
+ 
 
 
 ////////상수///////
@@ -72,6 +73,66 @@ app.get('/nathan', function(req, res) {
     res.sendfile(__dirname + '/nathan.html');
 });
 
+app.get('/file', function(req, res) {
+    console.log("===============================================");
+    res.sendfile(__dirname + '/file.html');
+});
+
+//////////////////////added to file upload///////////////////////
+
+
+
+app.post('/upload', function(req, res, next) {
+console.log("body : "+req.body);
+console.log("files : " +req.files);
+console.log("uploadfile : " + req.files.uploadfile );
+console.log("req.files.uploadfile.path : " + req.files.uploadfile.path );
+console.log("req.files.uploadfile.name : " + req.files.uploadfile.name );
+
+// get the temporary location of the file
+    var tmp_path = req.files.uploadfile.path;
+    // set where the file should actually exists - in this case it is in the "images" directory
+    var target_path = './tmp/' + req.files.uploadfile.name;
+    // move the file from the temporary location to the intended location
+    
+    console.log("target_path : " + target_path);
+    
+    fs.exists('./tmp', function (exists) {
+    
+    //folder already exsist... 
+      if( exists == true ){
+            fs.rename(tmp_path, target_path, function(err) {
+              if (err) throw err;
+              // delete the temporary file, so that the explicitly set temporary upload dir does not get filled with unwanted files
+                  fs.unlink(tmp_path, function() {
+                  if (err) throw err;
+                  res.send('File uploaded to: ' + target_path + ' - ' + req.files.uploadfile.size + ' bytes');
+                  });
+          });
+      }
+       //else no folder, make it
+      else{
+            fs.mkdir( './tmp', function(err){
+              if(err) throw err;
+              fs.rename(tmp_path, target_path, function(err) {
+                  if (err) throw err;
+                  // delete the temporary file, so that the explicitly set temporary upload dir does not get filled with unwanted files
+                  fs.unlink(tmp_path, function() {
+                        if (err) throw err;
+                        res.send('File uploaded to: ' + target_path + ' - ' + req.files.uploadfile.size + ' bytes');
+                  });
+              });
+          });
+      }
+    });
+   
+   
+    
+});
+
+//////////////////////////////////////
+
+
 
 //url 들어오면 파일 주는 부분
 app.use(function(request, response, next){
@@ -100,8 +161,6 @@ app.use(function(request, response, next){
         });
 });
 
-//////////////////////////////////////
-
 
 
 ////////////////////////////////////////////////////////////웹소켓 시작
@@ -112,9 +171,19 @@ app.use(function(request, response, next){
 //리스닝
 //**************
 
+
+app.listen(3000);
+server.listen(8686);
+
+//app.listen(7777);
+//app.listen(8888);
+//app.listen(9999);
+//app.listen(process.env.PORT);
+
 console.log("Listening....");
 console.log("ip : " + process.env.IP + ", port : " + process.env.PORT);
-
+console.log("ip : " + process.env.IP + ", port : " + 3000);
+console.log("ip : " + process.env.IP + ", port : " + 8686);
 
 
 io.sockets.on('connection', function (socket) {
